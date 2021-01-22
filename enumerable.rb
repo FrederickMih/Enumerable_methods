@@ -87,6 +87,17 @@ module Enumerable
 
     arr
   end
+
+  # my_inject method
+
+  def my_inject(initial = nil)
+    result = initial.nil? ? self[0] : initial
+
+    (1..length - 1).each do |i|
+      result = yield(result, self[i])
+    end
+    result
+  end
 end
 
 # testing my methods
@@ -109,3 +120,10 @@ end
 # puts([4, 8, 5].my_count { |i| i == 4 })
 # puts([4, 8, 5].my_count { |i| i > 4 })
 # puts([4, 8, 5].my_map { |num| num * 10 })
+test_block = proc { |elem| elem * 10 }
+puts [4, 8, 5].my_map(&test_block)
+puts([4, 8, 5].my_inject { |result, elem| result + elem })
+def multiply_els(arr)
+  arr.my_inject { |result, elem| result * elem }
+end
+puts multiply_els [2, 4, 5]
