@@ -61,6 +61,16 @@ module Enumerable
     true
   end
 
+  #   my_count method
+  def my_count
+    b = *self
+    count = 0
+    b.my_each do |i|
+      count += 1 if yield(i) == true
+    end
+    count
+  end
+
   # testing my methods
 
   [4, 8, 5].my_each do |i|
@@ -78,4 +88,5 @@ module Enumerable
   puts([4, 8, 5].my_all? { |i| i > 2 })
   puts([4, 8, 5].my_any? { |i| i == 2 })
   puts([4, 8, 5].my_none? { |i| i == 4 })
+  puts([4, 8, 5].my_count { |i| i == 4 })
 end
