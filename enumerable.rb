@@ -50,6 +50,17 @@ module Enumerable
     end
     false
   end
+
+  #  my_none method
+
+  def my_none?
+    b = *self
+    b.my_each do |i|
+      return false if yield(i) == true
+    end
+    true
+  end
+
   # testing my methods
 
   [4, 8, 5].my_each do |i|
@@ -66,4 +77,5 @@ module Enumerable
 
   puts([4, 8, 5].my_all? { |i| i > 2 })
   puts([4, 8, 5].my_any? { |i| i == 2 })
+  puts([4, 8, 5].my_none? { |i| i == 4 })
 end
