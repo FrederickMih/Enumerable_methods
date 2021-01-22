@@ -62,31 +62,50 @@ module Enumerable
   end
 
   #   my_count method
-  def my_count
-    b = *self
+
+  def my_count(num = nil)
     count = 0
-    b.my_each do |i|
-      count += 1 if yield(i) == true
+    if num
+      my_each { |elem| count += 1 if elem == num }
+    elsif block_given?
+      my_each { |elem| count += 1 if yield(elem) }
+    else
+      count = length
     end
     count
   end
 
-  # testing my methods
+  #   my_map method
 
-  [4, 8, 5].my_each do |i|
-    puts i
+  def my_map(block = nil)
+    arr = []
+    if block
+      my_each_with_index { |elem, index| arr[index] = block.call(elem) }
+    else
+      my_each_with_index { |elem, index| arr[index] = yield(elem) }
+    end
+
+    arr
   end
-
-  [4, 8, 5].my_each_with_index do |i, index|
-    puts "#{i} at index #{index}"
-  end
-
-  [4, 8, 5].my_select do |i|
-    puts i if i > 4
-  end
-
-  puts([4, 8, 5].my_all? { |i| i > 2 })
-  puts([4, 8, 5].my_any? { |i| i == 2 })
-  puts([4, 8, 5].my_none? { |i| i == 4 })
-  puts([4, 8, 5].my_count { |i| i == 4 })
 end
+
+# testing my methods
+
+# [4, 8, 5].my_each do |i|
+#   puts i
+# end
+
+# [4, 8, 5].my_each_with_index do |i, index|
+#   puts "#{i} at index #{index}"
+# end
+
+# [4, 8, 5].my_select do |i|
+#   puts i if i > 4
+# end
+
+# puts([4, 8, 5].my_all? { |i| i > 2 })
+# puts([4, 8, 5].my_any? { |i| i == 2 })
+# puts([4, 8, 5].my_none? { |i| i == 4 })
+# puts([4, 8, 5].my_count { |i| i == 4 })
+# puts([4, 8, 5].my_count { |i| i > 4 })
+# puts([4, 8, 5].my_map { |num| num * 10 })
