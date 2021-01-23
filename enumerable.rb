@@ -1,3 +1,4 @@
+# rubocop:enable Metrics/ModuleLength
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
 module Enumerable
@@ -82,11 +83,12 @@ module Enumerable
     j = 0
     b = *self
     n = b.length
-    
+
     if param[0].is_a? Class
       n.times do
         return true if b[j].is_a?(param[0])
-      j += 1
+
+        j += 1
       end
     elsif param[0].is_a? Regexp
       n.times do
@@ -119,85 +121,114 @@ module Enumerable
   end
 
 
+#  my_none method
 
-  end
+def my_none?(*param)
+  j = 0
+  b = *self
+  n = b.length
 
-  #  my_none method
+  if param[0].is_a? Class
+    n.times do
+      return false if b[j].is_a?(param[0])
 
-  def my_none?
-    b = *self
-    b.my_each do |i|
-      return false if yield(i) == true
+      j += 1
     end
-    true
-  end
+  elsif param[0].is_a? Regexp
+    n.times do
+      return false if b[j] =~ param[0]
 
-  #   my_count method
-
-  def my_count(num = nil)
-    count = 0
-    if num
-      my_each { |elem| count += 1 if elem == num }
-    elsif block_given?
-      my_each { |elem| count += 1 if yield(elem) }
-    else
-      count = length
-    end
-    count
-  end
-
-  #   my_map method
-
-  def my_map(block = nil)
-    arr = []
-    if block
-      my_each_with_index { |elem, index| arr[index] = block.call(elem) }
-    else
-      my_each_with_index { |elem, index| arr[index] = yield(elem) }
+      j += 1
     end
 
-    arr
-  end
+  elsif param.size == 1
+    n.times do
+      return false if b[j] == param[0]
 
-  # my_inject method
-
-  def my_inject(initial = nil)
-    result = initial.nil? ? self[0] : initial
-
-    (1..length - 1).each do |i|
-      result = yield(result, self[i])
+      j += 1
     end
-    result
+
+  elsif block_given?
+    n.times do
+      return false if yield(b[j])
+
+      j += 1
+    end
+  else
+    n.times do
+      return false if b[j]
+
+      j += 1
+    end
+  end
+  true
+end
+
+#   my_count method
+
+def my_count(num = nil)
+  count = 0
+  if num
+    my_each { |elem| count += 1 if elem == num }
+  elsif block_given?
+    my_each { |elem| count += 1 if yield(elem) }
+  else
+    count = length
+  end
+  count
+end
+
+#   my_map method
+
+def my_map(block = nil)
+  arr = []
+  if block
+    my_each_with_index { |elem, index| arr[index] = block.call(elem) }
+  else
+    my_each_with_index { |elem, index| arr[index] = yield(elem) }
   end
 
+  arr
+end
 
+# my_inject method
+
+def my_inject(*param)
+      j = 0
+      b = *self
+      n = b.length
+
+  if param[0].is_a? Symbol
+    pr = param[0].to_proc
+    accu = b[0]
+    j = 1
+    (n- 1).times do
+      accu = pr.call(accu, b[j])
+      j += 1
+    end
+  elsif param[1].is_a? Symbol
+    accu = param[0]
+    pr = param[1].to_proc
+    b.my_each do |element|
+      accu = pr.call(accu, element)
+    end
+  elsif block_given?
+    accu = param[0]
+    b.my_each do |element|
+      accu = !accu ? element : yield(accu, element)
+    end
+  else
+    raise LocalJumpError unless block_given?
+  end
+  accu
+end
+end
+# rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 
-# testing my methods
 
-# [4, 8, 5].my_each do |i|
-#   puts i
-# end
-
-# [4, 8, 5].my_each_with_index do |i, index|
-#   puts "#{i} at index #{index}"
-# end
-
-# [4, 8, 5].my_select do |i|
-#   puts i if i > 4
-# end
-
-# puts([4, 8, 5].my_all? { |i| i > 5 })
-# puts([4, 8, 5].my_any? { |i| i == 2 })
-# puts([4, 8, 5].my_none? { |i| i == 4 })
-# puts([4, 8, 5].my_count { |i| i == 4 })
-# puts([4, 8, 5].my_count { |i| i > 4 })
-# puts([4, 8, 5].my_map { |num| num * 10 })
-# test_block = proc { |elem| elem * 10 }
-# puts [4, 8, 5].my_map(&test_block)
-# puts([4, 8, 5].my_inject { |result, elem| result + elem })
 # def multiply_els(arr)
-#   arr.my_inject { |result, elem| result * elem }
+# arr.my_inject { |result, elem| result * elem }
 # end
 # puts multiply_els [2, 4, 5]
