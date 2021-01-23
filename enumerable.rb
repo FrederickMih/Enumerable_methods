@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
 module Enumerable
   def my_each
     b = *self
@@ -33,10 +35,43 @@ module Enumerable
   end
 
   #   my_all method
-  def my_all?
+
+  def my_all?(*arg)
+    j = 0
     b = *self
-    b.my_each do |i|
-      return false if yield(i) == false
+    n = b.length
+    if arg[0].is_a? Class
+      n.times do
+        return false unless b[j].is_a?(arg[0])
+
+        j += 1
+      end
+    elsif arg[0].is_a? Regexp
+      n.times do
+        return false unless b[j] =~ arg[0]
+
+        j += 1
+      end
+
+    elsif arg.size == 1
+      n.times do
+        return false unless b[j] == arg[0]
+
+        j += 1
+      end
+
+    elsif block_given?
+      n.times do
+        return false unless yield(b[j])
+
+        j += 1
+      end
+    else
+      n.times do
+        return false unless b[j]
+
+        j += 1
+      end
     end
     true
   end
@@ -100,6 +135,9 @@ module Enumerable
   end
 end
 
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+
 # testing my methods
 
 # [4, 8, 5].my_each do |i|
@@ -114,16 +152,18 @@ end
 #   puts i if i > 4
 # end
 
-# puts([4, 8, 5].my_all? { |i| i > 2 })
+# puts([4, 8, 5].my_all? { |i| i > 5 })
 # puts([4, 8, 5].my_any? { |i| i == 2 })
 # puts([4, 8, 5].my_none? { |i| i == 4 })
 # puts([4, 8, 5].my_count { |i| i == 4 })
 # puts([4, 8, 5].my_count { |i| i > 4 })
 # puts([4, 8, 5].my_map { |num| num * 10 })
-test_block = proc { |elem| elem * 10 }
-puts [4, 8, 5].my_map(&test_block)
-puts([4, 8, 5].my_inject { |result, elem| result + elem })
-def multiply_els(arr)
-  arr.my_inject { |result, elem| result * elem }
-end
-puts multiply_els [2, 4, 5]
+# test_block = proc { |elem| elem * 10 }
+# puts [4, 8, 5].my_map(&test_block)
+# puts([4, 8, 5].my_inject { |result, elem| result + elem })
+# def multiply_els(arr)
+#   arr.my_inject { |result, elem| result * elem }
+# end
+# puts multiply_els [2, 4, 5]
+
+
