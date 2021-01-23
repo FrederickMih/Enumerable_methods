@@ -4,6 +4,7 @@
 module Enumerable
   def my_each
     b = *self
+    return to_eum(:my_each) unless block_given?
     i = 0
     until i == b.size
       yield(b[i])
@@ -16,6 +17,7 @@ module Enumerable
 
   def my_each_with_index
     b = *self
+    return to_eum(:my_each_with_index) unless block_given?
     i = 0
     until i == b.size
       yield(b[i], i)
@@ -28,6 +30,7 @@ module Enumerable
 
   def my_select
     b = *self
+    return to_eum(:my_select) unless block_given?
     arr = []
     b.my_each do |i|
       arr.push(i) if yield(i)
@@ -166,22 +169,34 @@ end
 
 #   my_count method
 
-def my_count(num = nil)
-  count = 0
-  if num
-    my_each { |elem| count += 1 if elem == num }
-  elsif block_given?
-    my_each { |elem| count += 1 if yield(elem) }
-  else
-    count = length
+def my_count(arg = nil)
+    b = *self
+    j = 0
+    n = b.length
+    count = 0
+    if block_given?
+      n.times do
+        count += 1 if yield(b[j])
+        i += 1
+      end
+      count
+    else
+      unless arg.nil?
+          n.times do
+          count += 1 if b[j] == arg
+          i += 1
+        end
+        return count
+      end
+      n
+    end
   end
-  count
-end
 
 #   my_map method
 
 def my_map(block = nil)
   arr = []
+  return to_eum(:my_map) unless block_given?
   if block
     my_each_with_index { |elem, index| arr[index] = block.call(elem) }
   else
@@ -223,12 +238,14 @@ def my_inject(*param)
   accu
 end
 end
+
+def multiply_els(arr)
+arr.my_inject { |result, elem| result * elem }
+end
+puts multiply_els [2, 4, 5]
+
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 
 
-# def multiply_els(arr)
-# arr.my_inject { |result, elem| result * elem }
-# end
-# puts multiply_els [2, 4, 5]
