@@ -36,26 +36,26 @@ module Enumerable
 
   #   my_all method
 
-  def my_all?(*arg)
+  def my_all?(*param)
     j = 0
     b = *self
     n = b.length
-    if arg[0].is_a? Class
+    if param[0].is_a? Class
       n.times do
-        return false unless b[j].is_a?(arg[0])
+        return false unless b[j].is_a?(param[0])
 
         j += 1
       end
-    elsif arg[0].is_a? Regexp
+    elsif param[0].is_a? Regexp
       n.times do
-        return false unless b[j] =~ arg[0]
+        return false unless b[j] =~ param[0]
 
         j += 1
       end
 
-    elsif arg.size == 1
+    elsif param.size == 1
       n.times do
-        return false unless b[j] == arg[0]
+        return false unless b[j] == param[0]
 
         j += 1
       end
@@ -78,12 +78,48 @@ module Enumerable
 
   #  my_any
 
-  def my_any?
+  def my_any?(*param)
+    j = 0
     b = *self
-    b.my_each do |i|
-      return true if yield(i) == true
+    n = b.length
+    
+    if param[0].is_a? Class
+      n.times do
+        return true if b[j].is_a?(param[0])
+      j += 1
+      end
+    elsif param[0].is_a? Regexp
+      n.times do
+        return true if b[j] =~ param[0]
+
+        j += 1
+      end
+
+    elsif param.size == 1
+      n.times do
+        return true if b[j] == param[0]
+
+        j += 1
+      end
+
+    elsif block_given?
+      n.times do
+        return true if yield(b[j])
+
+        j += 1
+      end
+    else
+      n.times do
+        return true if b[j]
+
+        j += 1
+      end
     end
     false
+  end
+
+
+
   end
 
   #  my_none method
@@ -133,7 +169,7 @@ module Enumerable
     end
     result
   end
-end
+
 
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
@@ -165,5 +201,3 @@ end
 #   arr.my_inject { |result, elem| result * elem }
 # end
 # puts multiply_els [2, 4, 5]
-
-
