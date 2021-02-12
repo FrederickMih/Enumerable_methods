@@ -40,7 +40,12 @@ describe "#my_each_with_index" do
    it "returns enumerable if no block is given" do
       expect(array.my_each_with_index.is_a? (Enumerable)).to eql(true)
    end
+end
 
+describe '#my_select' do
+   it "returns an array with the selected numbers given in the block" do
+      expect(array.my_select { |num| num > 2 }).to eql([3, 4])
+   end
 end
 
 end 
