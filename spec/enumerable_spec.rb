@@ -118,6 +118,20 @@ describe "#my_none" do
    it "returns false if no elements is true" do
       expect(array.my_none?).to eql(false)
    end
+
+   it "returns true if no elements are true" do 
+      expect([false, nil, false].my_none?).to eql(true)
+   end
+
+   it "returns false if no elements are of the same class" do 
+      expect(array.my_none?(Integer)).to eql(false)
+   end
+
+
+   
+
+   
+   
 end
 
 
