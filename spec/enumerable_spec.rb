@@ -61,31 +61,60 @@ let(:rg) { ( 1...5 ) }
 
 # end
 
-describe "my_all?" do
-   it "returns true if all elements are true" do
-      expect(array.my_all?).to eql(true)
-   end
+# describe "my_all?" do
+#    it "returns true if all elements are true" do
+#       expect(array.my_all?).to eql(true)
+#    end
 
-   it "returns true if all elements are of the same class" do 
-      expect(array.my_all?(Integer)).to eql(true)
-   end
+#    it "returns true if all elements are of the same class" do 
+#       expect(array.my_all?(Integer)).to eql(true)
+#    end
 
-   it "returns false if one of the element in the block is false" do
-      expect([1, 2, false].my_all?).to eql(false)
-   end
+#    it "returns false if one of the element in the block is false" do
+#       expect([1, 2, false].my_all?).to eql(false)
+#    end
 
-   it "returns true if all elements are equal to  a given array" do
-      expect([2, 2, 2, 2, 2, 2, 2].my_all?(2)).to eql(true)
-   end
+#    it "returns true if all elements are equal to  a given array" do
+#       expect([2, 2, 2, 2, 2, 2, 2].my_all?(2)).to eql(true)
+#    end
    
-   it "returns true if all the elements comply with a given block" do
-      expect(array.my_all? { |num| num < 10 }).to eql(true)
-   end
+#    it "returns true if all the elements comply with a given block" do
+#       expect(array.my_all? { |num| num < 10 }).to eql(true)
+#    end
     
-   it "returns true if all the elements contain a given regex" do
-      expect(["how", "hello", "common"].my_all?(/o/)).to eql(true)
+#    it "returns true if all the elements contain a given regex" do
+#       expect(["how", "hello", "common"].my_all?(/o/)).to eql(true)
+#    end
+# end
+
+describe '#my_any' do
+
+   it "returns false if one of the elements is true" do
+      expect(array.my_any?).to eql(true)
+   end
+
+   it "returns false if all elements are falsy" do 
+      expect([false, nil, false].my_any?).to eql(false)
+   end
+
+   it "returns true if one of the elements are of the same class" do 
+      expect(array.my_any?(Integer)).to eql(true)
+   end
+
+    it "returns true if one of the elements contain a given regex" do
+      expect(["how", "hello", "commn"].my_any?(/o/)).to eql(true)
+   end
+
+   it "returns true if one of the elements are equal to  a given argument" do
+      expect([2, 4, 3, 1, 1, 1, 1].my_any?(2)).to eql(true)
+   end
+
+    it "returns true if one of  the elements comply with a given block" do
+      expect(array.my_any? { |num| num < 10 }).to eql(true)
    end
 end
+
+
 
 
 
