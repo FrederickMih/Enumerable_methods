@@ -93,7 +93,7 @@ describe '#my_any' do
       expect(array.my_any?).to eql(true)
    end
 
-   it "returns false if all elements are falsy" do 
+   it "returns false if all elements are false" do 
       expect([false, nil, false].my_any?).to eql(false)
    end
 
@@ -111,6 +111,12 @@ describe '#my_any' do
 
     it "returns true if one of  the elements comply with a given block" do
       expect(array.my_any? { |num| num < 10 }).to eql(true)
+   end
+end
+
+describe "#my_none" do
+   it "returns false if no elements is true" do
+      expect(array.my_none?).to eql(false)
    end
 end
 
