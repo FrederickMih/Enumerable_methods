@@ -139,10 +139,6 @@ describe "#my_none" do
       expect(array.my_none? { |num| num < 10 }).to eql(false)
    end
 
-   
-
- 
-
 
    
 end
