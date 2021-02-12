@@ -146,7 +146,6 @@ describe '#my_count' do
       expect([2, 3, 4, 5, 6, 2, 2, 2, 7].my_count(2)).to eql(4)
    end
 
-   it "it returns 0 if no elements are true in the block"
 end
 
 
