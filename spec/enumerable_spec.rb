@@ -61,4 +61,13 @@ describe '#my_select' do
 
 end
 
+describe "my_all?" do
+   it "returns true if all elements are true" do
+      expect(array.my_all?).to eql(true)
+   end
+   
+end
+
+
+
 end 
