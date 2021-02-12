@@ -177,14 +177,14 @@ def my_count(arg = nil)
     if block_given?
       n.times do
         count += 1 if yield(b[j])
-        i += 1
+        j += 1
       end
       count
     else
       unless arg.nil?
           n.times do
           count += 1 if b[j] == arg
-          i += 1
+          j += 1
         end
         return count
       end
@@ -196,7 +196,7 @@ def my_count(arg = nil)
 
 def my_map(block = nil)
   arr = []
-  return to_eum(:my_map) unless block_given?
+  return to_enum(:my_map) unless block_given?
   if block
     my_each_with_index { |elem, index| arr[index] = block.call(elem) }
   else
