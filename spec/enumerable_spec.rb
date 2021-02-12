@@ -14,9 +14,9 @@ describe "#my_each" do
       expect(hs.my_each { |k, _v| k }).to eql(hs)
     end
 
-   #  it "returns the range of numbers" do
-   #    expect(rg.my_each { |nbers| nbers }).to eql(rg)
-   #  end
+    it "returns the range of numbers" do
+      expect(rg.my_each { |nbers| nbers }).to eql(rg)
+    end
 
     it "returns an enumerable if no block is given" do
       expect(array.my_each.is_a?(Enumerable)).to eql(true)
@@ -35,6 +35,10 @@ describe "#my_each_with_index" do
 
    it "returns range of numbers" do
       expect(rg.my_each_with_index { |nbers, i| nbers }).to eql(rg)
+   end
+
+   it "returns enumerable if no block is given" do
+      expect(array.my_each_with_index.is_a? (Enumerable)).to eql(true)
    end
 
 end
