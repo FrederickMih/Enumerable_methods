@@ -123,14 +123,27 @@ describe "#my_none" do
       expect([false, nil, false].my_none?).to eql(true)
    end
 
-   it "returns false if no elements are of the same class" do 
+   it "returns false if no element is of the same class" do 
       expect(array.my_none?(Integer)).to eql(false)
    end
 
+   it "returns true if none of them contain a given regex" do
+      expect(["hw", "hell", "cmmn"].my_none?(/o/)).to eql(true)
+   end
+
+   it "returns true if none of the elements are equal to a given argument" do
+      expect([2, 4, 3, 1, 1, 1, 1].my_none?(10)).to eql(true)
+   end
+
+   it "returns false if none of  the elements comply with a given block" do
+      expect(array.my_none? { |num| num < 10 }).to eql(false)
+   end
 
    
 
-   
+ 
+
+
    
 end
 
