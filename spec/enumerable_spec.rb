@@ -153,6 +153,9 @@ describe '#my_count' do
    it "counts the elements that are true in the block" do
       expect(array.my_count { |n| n > 2 }).to eql(3)
    end
+
+   it "counts the element of an array if no block is given" do
+      expect(array.my_count).to eql(5)
 end
 
 
