@@ -46,6 +46,10 @@ describe '#my_select' do
    it "returns an array with the selected numbers given in the block" do
       expect(array.my_select { |num| num > 2 }).to eql([3, 4])
    end
+   
+   it "returns an empty array if the elements are false in the block" do
+      expect(array.my_select { |n| n > 5 }).to eql([])
+   end
 end
 
 end 
