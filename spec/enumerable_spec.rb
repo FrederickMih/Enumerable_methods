@@ -176,8 +176,24 @@ describe "#my_inject" do
       expect(array.my_inject(:*)).to eql(120)
    end
 
-    it "returns the result of a mathematical expression passed to the argument" do
-      expect(array.my_inject(:*)).to eql(120)
+   it "returns the result of a mathematical expression passed to the argument" do
+      expect((1...5).my_inject(20, :+)).to eql(24)
+   end
+
+   it "returns the result of a mathematical expression passed as a block" do
+      expect((1...5).my_inject {|i, num| i + num }).to eql(15)
+   end
+
+   it "returns the result of a mathematical expression passed as a block while using an acculator" do
+      expect((1...5).my_inject(20) {|i, num| i + num }).to eql(35)
+   end
+
+    it "returns the the longest string" do
+      expect(["Mih", "Frederick", "ngum"].my_inject{|acc, str| acc.length > word.length ? acc : word } ).to eql(Frederick)
+   end
+    
+   it "raises a localJump error if no block or symbol is given" do
+      expect {array.my_inject}.to raise_error(LocalJumpError)
    end
 
 
