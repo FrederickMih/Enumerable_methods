@@ -167,6 +167,19 @@ describe "#my_map" do
    end
 end
 
+describe "#my_inject" do
+   it "returns the result of a mathematical expression passed to the argument" do
+      expect((1...5).my_inject(:+)).to eql(4)
+   end
+
+    it "returns the result of a mathematical expression passed to the argument" do
+      expect(array.my_inject(:*)).to eql(120)
+   end
+
+    it "returns the result of a mathematical expression passed to the argument" do
+      expect(array.my_inject(:*)).to eql(120)
+   end
+
 
 
     
