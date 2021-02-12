@@ -158,6 +158,19 @@ describe '#my_count' do
       expect(array.my_count).to eql(5)
 end
 
+describe "#my_map" do
+   it "iterates through a range and returns the modified values" do
+      expect(rg.my_map { |nber| nber - 1 }).to eql([0, 1, 2, 3, 4])
+   end
+   it "returns an enumerator if no block is given" do
+      expect(array.my_map.is_a?)(Enumerable).to eql(true)
+   end
+end
+
+
+
+    
+
 
 
 
