@@ -145,7 +145,10 @@ describe '#my_count' do
    it "counts the elements that are equal to the given parameter" do
       expect([2, 3, 4, 5, 6, 2, 2, 2, 7].my_count(2)).to eql(4)
    end
-
+   
+   it " returns 0 if no elements are true in the block" do
+      expect(array.my_count { |n| n > 6 }).to eql(0)
+   end
 end
 
 
