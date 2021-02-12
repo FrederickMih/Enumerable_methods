@@ -29,7 +29,7 @@ describe "#my_each_with_index" do
       expect(array.my_each_with_index { |n, i| n }).to eql(array)
    end
 
-   it "returns a hash" do 
+   it "returns the hash" do 
       expect(hs.my_each_with_index { |k, v, i| k }).to eql(hs)
    end
 
@@ -44,12 +44,21 @@ end
 
 describe '#my_select' do
    it "returns an array with the selected numbers given in the block" do
-      expect(array.my_select { |num| num > 2 }).to eql([3, 4])
+      expect(array.my_select { |num| num < 3 }).to eql([1, 2])
    end
    
    it "returns an empty array if the elements are false in the block" do
       expect(array.my_select { |n| n > 5 }).to eql([])
    end
+   
+   it "return an enumerator if no block is given" do
+      expect(array.my_select.is_a?(Enumerable)).to eql(true)
+   end
+
+   it "returns an array with strings that are true to the given block" do
+      expect(["f", "r", "e", "d"].my_select { |n| n }).to eql(["r"])
+   end
+
 end
 
 end 

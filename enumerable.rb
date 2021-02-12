@@ -30,7 +30,7 @@ module Enumerable
 
   def my_select
     b = *self
-    return to_eum(:my_select) unless block_given?
+    return to_enum(:my_select) unless block_given?
     arr = []
     b.my_each do |i|
       arr.push(i) if yield(i)
