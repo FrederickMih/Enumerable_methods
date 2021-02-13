@@ -1,4 +1,4 @@
-# rubocop:disable  Metrics/Modulelength
+# rubocop:disable Metrics/MethodLength
 module Enumerable
   def my_each
     b = *self
@@ -40,9 +40,8 @@ module Enumerable
   end
 
   #   my_all method
-   # rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable  Metrics/PerceivedComplexity
-# rubocop:disable  Metrics/Modulelength
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable  Metrics/PerceivedComplexity
 
   def my_all?(*param)
     j = 0
@@ -85,9 +84,6 @@ module Enumerable
   end
 
   #  my_any
-   # rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable  Metrics/PerceivedComplexity
-# rubocop:disable  Metrics/Modulelength
 
   def my_any?(*param)
     j = 0
@@ -174,10 +170,6 @@ module Enumerable
   end
 
   #   my_count method
-   # rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable  Metrics/PerceivedComplexity
-# rubocop:disable  Metrics/Modulelength
-  
 
   def my_count(arg = nil)
     b = *self
@@ -217,10 +209,6 @@ module Enumerable
     arr
   end
 
- # rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable  Metrics/PerceivedComplexity
-# rubocop:disable  Metrics/Modulelength
-
   def my_inject(*param)
     j = 0
     b = *self
@@ -259,4 +247,3 @@ puts multiply_els [2, 4, 5]
 
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
-# rubocop:enable Metrics/Modulelength
