@@ -6,6 +6,25 @@
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
+
+## Environment set up requirements
+
+To run this game, you need ruby installed in your environment.
+Run the following command:
+
+```
+$ ruby -v
+```
+
+You should have a result similar to this:
+
+```
+ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-linux]
+```
+
+If you don't get that result, follow this [link](https://www.ruby-lang.org/en/documentation/installation/) and install Ruby in your local environment.
+
+
  ### Prerequisites
 You must have a text editor installed on your machine.
 You can use any default text editor that comes with the system like Notepad but advanced text editors

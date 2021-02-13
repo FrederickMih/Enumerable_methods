@@ -1,10 +1,12 @@
-# rubocop:enable Metrics/ModuleLength
+# rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/ModuleLength
 module Enumerable
   def my_each
     b = *self
-    return to_eum(:my_each) unless block_given?
+    return to_enum(:my_each) unless block_given?
+
     i = 0
     until i == b.size
       yield(b[i])
@@ -17,7 +19,8 @@ module Enumerable
 
   def my_each_with_index
     b = *self
-    return to_eum(:my_each_with_index) unless block_given?
+    return to_enum(:my_each_with_index) unless block_given?
+
     i = 0
     until i == b.size
       yield(b[i], i)
@@ -30,7 +33,8 @@ module Enumerable
 
   def my_select
     b = *self
-    return to_eum(:my_select) unless block_given?
+    return to_enum(:my_select) unless block_given?
+
     arr = []
     b.my_each do |i|
       arr.push(i) if yield(i)
@@ -123,53 +127,52 @@ module Enumerable
     false
   end
 
+  #  my_none method
 
-#  my_none method
+  def my_none?(*param)
+    j = 0
+    b = *self
+    n = b.length
 
-def my_none?(*param)
-  j = 0
-  b = *self
-  n = b.length
+    if param[0].is_a? Class
+      n.times do
+        return false if b[j].is_a?(param[0])
 
-  if param[0].is_a? Class
-    n.times do
-      return false if b[j].is_a?(param[0])
+        j += 1
+      end
+    elsif param[0].is_a? Regexp
+      n.times do
+        return false if b[j] =~ param[0]
 
-      j += 1
+        j += 1
+      end
+
+    elsif param.size == 1
+      n.times do
+        return false if b[j] == param[0]
+
+        j += 1
+      end
+
+    elsif block_given?
+      n.times do
+        return false if yield(b[j])
+
+        j += 1
+      end
+    else
+      n.times do
+        return false if b[j]
+
+        j += 1
+      end
     end
-  elsif param[0].is_a? Regexp
-    n.times do
-      return false if b[j] =~ param[0]
-
-      j += 1
-    end
-
-  elsif param.size == 1
-    n.times do
-      return false if b[j] == param[0]
-
-      j += 1
-    end
-
-  elsif block_given?
-    n.times do
-      return false if yield(b[j])
-
-      j += 1
-    end
-  else
-    n.times do
-      return false if b[j]
-
-      j += 1
-    end
+    true
   end
-  true
-end
 
-#   my_count method
+  #   my_count method
 
-def my_count(arg = nil)
+  def my_count(arg = nil)
     b = *self
     j = 0
     n = b.length
@@ -177,14 +180,14 @@ def my_count(arg = nil)
     if block_given?
       n.times do
         count += 1 if yield(b[j])
-        i += 1
+        j += 1
       end
       count
     else
       unless arg.nil?
-          n.times do
+        n.times do
           count += 1 if b[j] == arg
-          i += 1
+          j += 1
         end
         return count
       end
@@ -192,60 +195,57 @@ def my_count(arg = nil)
     end
   end
 
-#   my_map method
+  #   my_map method
 
-def my_map(block = nil)
-  arr = []
-  return to_eum(:my_map) unless block_given?
-  if block
-    my_each_with_index { |elem, index| arr[index] = block.call(elem) }
-  else
-    my_each_with_index { |elem, index| arr[index] = yield(elem) }
+  def my_map(block = nil)
+    arr = []
+    return to_enum(:my_map) unless block_given?
+
+    if block
+      my_each_with_index { |elem, index| arr[index] = block.call(elem) }
+    else
+      my_each_with_index { |elem, index| arr[index] = yield(elem) }
+    end
+
+    arr
   end
 
-  arr
-end
+  def my_inject(*param)
+    j = 0
+    b = *self
+    n = b.length
 
-# my_inject method
-
-def my_inject(*param)
-      j = 0
-      b = *self
-      n = b.length
-
-  if param[0].is_a? Symbol
-    pr = param[0].to_proc
-    accu = b[0]
-    j = 1
-    (n- 1).times do
-      accu = pr.call(accu, b[j])
-      j += 1
+    if param[0].is_a? Symbol
+      pr = param[0].to_proc
+      accu = b[0]
+      j = 1
+      (n - 1).times do
+        accu = pr.call(accu, b[j])
+        j += 1
+      end
+    elsif param[1].is_a? Symbol
+      accu = param[0]
+      pr = param[1].to_proc
+      b.my_each do |element|
+        accu = pr.call(accu, element)
+      end
+    elsif block_given?
+      accu = param[0]
+      b.my_each do |element|
+        accu = !accu ? element : yield(accu, element)
+      end
+    else
+      raise LocalJumpError unless block_given?
     end
-  elsif param[1].is_a? Symbol
-    accu = param[0]
-    pr = param[1].to_proc
-    b.my_each do |element|
-      accu = pr.call(accu, element)
-    end
-  elsif block_given?
-    accu = param[0]
-    b.my_each do |element|
-      accu = !accu ? element : yield(accu, element)
-    end
-  else
-    raise LocalJumpError unless block_given?
+    accu
   end
-  accu
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 end
-end
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/ModuleLength
 
 def multiply_els(arr)
-arr.my_inject { |result, elem| result * elem }
+  arr.my_inject { |result, elem| result * elem }
 end
 puts multiply_els [2, 4, 5]
-
-# rubocop:enable Metrics/ModuleLength
-# rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/PerceivedComplexity
-
-
